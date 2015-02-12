@@ -1,4 +1,5 @@
 import mechanize
+import sys
 import time
 from bs4 import BeautifulSoup
 import re
@@ -41,13 +42,37 @@ def yahoosearch(search_term):
 
     return results
 
-def process_terms(f):
+def bingsearch(search_term):
+    br = mechanize.Browser()
+    br.set_handle_robots(False)
+    br.set_handle_equiv(False)
+    br.addheaders = [('User-agent', 'Mozilla/5.0')]
+    br.open('http://search.yahoo.com/')
 
-    search_terms = [search_term.strip("\n").replace(' ','+') for search_term in f.readlines()]
+    # do the query
+    br.select_form(name='s')
+    br.open("http://www.bing.com/search?count=50&q=%s" % search_term.replace(' ', '+'))
+    data = br.response()
+    soup = BeautifulSoup(data.read())
+
+    li = soup.findAll('li', {'class': 'b_algo'})
+
+    results = [l.a['href'] for l in li]
+
+    return results
+
+def process_terms(f, *args, **kwargs):
+
+    search_terms = [search_term.strip("\n").replace(' ', '+') for search_term in f.readlines()]
 
     print '{:36} {:20} {:20}'.format('Search Term', 'dell.com', 'enstratius.com')
     for s in search_terms:
-        output = yahoosearch(s)
+        if kwargs['google']:
+            output = googlesearch(s)
+        elif kwargs['yahoo']:
+            output = yahoosearch(s)
+        elif kwargs['bing']:
+            output = bingsearch(s)
 
         dell_idx = [i for i, item in enumerate(output) if re.search('dell.com', item)]
         enstratius_idx = [i for i, item in enumerate(output) if re.search('enstratius.com', item)]
@@ -57,11 +82,16 @@ def process_terms(f):
 
 def main():
     parser = argparse.ArgumentParser(description="DCM SEO Thing")
-    parser.add_argument("input", type=argparse.FileType('r'),
-                        help="Text file containing search terms, one per line.", metavar='input.txt')
+    parser.add_argument('input', type=argparse.FileType('r'),
+                        help='Text file containing search terms, one per line.', metavar='input.txt')
+    parser.add_argument('--google', '-g', action='store_true', help='Run the google search.')
+    parser.add_argument('--yahoo', '-y', action='store_true', help='Run the yahoo search.')
+    parser.add_argument('--bing', '-b', action='store_true', help='Run the bing search.')
 
     args = parser.parse_args()
-    process_terms(args.input)
+
+    google, yahoo, bing = args.google, args.yahoo, args.bing
+    process_terms(args.input, google=google, yahoo=yahoo, bing=bing)
 
 if __name__ == '__main__':
     main()
