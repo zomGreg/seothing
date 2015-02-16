@@ -65,7 +65,13 @@ def process_terms(f, *args, **kwargs):
 
     search_terms = [search_term.strip("\n").replace(' ', '+') for search_term in f.readlines()]
 
+    search_string = 'Search Term'
+    dell_term = 'dell.com'
+    enstratius_term = 'enstratius.com'
+
+    print '{:36} {:20} {:20}'.format('-'*len(search_string), '-'*len(dell_term), '-'*len(enstratius_term))
     print '{:36} {:20} {:20}'.format('Search Term', 'dell.com', 'enstratius.com')
+    print '{:36} {:20} {:20}'.format('-'*len(search_string), '-'*len(dell_term), '-'*len(enstratius_term))
     for s in search_terms:
         if kwargs['google']:
             output = googlesearch(s)
@@ -78,7 +84,19 @@ def process_terms(f, *args, **kwargs):
         enstratius_idx = [i for i, item in enumerate(output) if re.search('enstratius.com', item)]
         enstratus_idx = [i for i, item in enumerate(output) if re.search('enstratus.com', item)]
         space_string = s.replace('+', ' ')
-        print '{:36} {:20} {:20}'.format(space_string, str(dell_idx).strip('[]'), str(enstratius_idx).strip('[]'))
+
+        if len(dell_idx) == 0:
+            dell = "Not Found"
+        else:
+            dell = str(dell_idx[:5]).strip('[]')
+
+        if len(enstratius_idx) == 0:
+            enstratius = "Not Found"
+        else:
+            enstratius = str(enstratius_idx[:5]).strip('[]')
+
+        print '{:36} {:20} {:20}'.format(space_string, dell, enstratius)
+        #print '{:36} {:20} {:20}'.format(space_string, len(dell_idx), len(enstratius_idx))
 
 def main():
     parser = argparse.ArgumentParser(description="DCM SEO Thing")
