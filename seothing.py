@@ -4,6 +4,7 @@ import time
 from bs4 import BeautifulSoup
 import re
 import argparse
+import json
 
 def googlesearch(search_term):
     br = mechanize.Browser()
@@ -69,16 +70,23 @@ def process_terms(f, *args, **kwargs):
     dell_term = 'dell.com'
     enstratius_term = 'enstratius.com'
 
-    print '{:36} {:20} {:20}'.format('-'*len(search_string), '-'*len(dell_term), '-'*len(enstratius_term))
-    print '{:36} {:20} {:20}'.format('Search Term', 'dell.com', 'enstratius.com')
-    print '{:36} {:20} {:20}'.format('-'*len(search_string), '-'*len(dell_term), '-'*len(enstratius_term))
-    for s in search_terms:
+    result_dict={}
+    results = {}
+
+    # print '{:36} {:20} {:20}'.format('-'*len(search_string), '-'*len(dell_term), '-'*len(enstratius_term))
+    # print '{:36} {:20} {:20}'.format('Search Term', 'dell.com', 'enstratius.com')
+    # print '{:36} {:20} {:20}'.format('-'*len(search_string), '-'*len(dell_term), '-'*len(enstratius_term))
+
+    for s in search_terms[:1]:
         if kwargs['google']:
             output = googlesearch(s)
+            search_engine = "google"
         elif kwargs['yahoo']:
             output = yahoosearch(s)
+            search_engine = "yahoo"
         elif kwargs['bing']:
             output = bingsearch(s)
+            search_engine = "bing"
 
         dell_idx = [i for i, item in enumerate(output) if re.search('dell.com', item)]
         enstratius_idx = [i for i, item in enumerate(output) if re.search('enstratius.com', item)]
@@ -88,15 +96,28 @@ def process_terms(f, *args, **kwargs):
         if len(dell_idx) == 0:
             dell = "Not Found"
         else:
-            dell = str(dell_idx[:5]).strip('[]')
+            dell = dell_idx[:5]
+            # dell = str(dell_idx[:5]).strip('[]')
 
         if len(enstratius_idx) == 0:
             enstratius = "Not Found"
         else:
-            enstratius = str(enstratius_idx[:5]).strip('[]')
+            #enstratius = str(enstratius_idx[:5]).strip('[]')
+            enstratius = enstratius_idx[:5]
 
-        print '{:36} {:20} {:20}'.format(space_string, dell, enstratius)
+        result_dict[space_string] = {"dell.com": dell, "enstratius.com": enstratius}
+
+        # print '{:36} {:20} {:20}'.format(space_string, dell, enstratius)
         #print '{:36} {:20} {:20}'.format(space_string, len(dell_idx), len(enstratius_idx))
+
+    results[search_engine] = result_dict
+    print results
+    with open (search_engine+'.json', 'w') as f:
+        try:
+            data = json.dumps(results)
+            f.write(data)
+        except ValueError:
+            pass
 
 def main():
     parser = argparse.ArgumentParser(description="DCM SEO Thing")
