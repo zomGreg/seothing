@@ -93,12 +93,12 @@ def process_terms(f, *args, **kwargs):
         if len(dell_idx) == 0:
             dell = "Not Found"
         else:
-            dell = str(dell_idx[:5]).strip('[]')
+            dell = str(dell_idx).strip('[]')
 
         if len(enstratius_idx) == 0:
             enstratius = "Not Found"
         else:
-            enstratius = enstratius_idx[:5]
+            enstratius = str(enstratius_idx).strip('[]')
 
         result_list.append({"search_term": str(space_string), "results": {"dell.com": dell, "enstratius.com": enstratius}})
 

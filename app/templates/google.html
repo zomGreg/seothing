@@ -8,7 +8,7 @@
   </head>
   <body>
     <h1>Google Results</h1>
-    {% for result in results %}
+    {% for result in google_results %}
     <div><p>{{ result.search_term | safe }} {{result.results['dell.com'] | safe }} {{ result.results['enstratius.com'] | safe }}</p></div>
     {% endfor %}
 

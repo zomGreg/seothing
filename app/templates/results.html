@@ -1,0 +1,35 @@
+<html>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='flask.css') }}">
+<head>
+    {% if engine %}
+    <title>{{ engine }} - Seo Thing</title>
+    {% else %}
+    <title>Welcome to the SEO Thing</title>
+    {% endif %}
+</head>
+<body>
+<h1>Results</h1>
+
+<table id="table-example-1">
+    <th>Search Term</th><th colspan="2">Google</th><th colspan="2">Yahoo</th><th colspan="2">Bing</th>
+    <tr>
+        <th></th>
+        <th>dell.com</th><th>enstratius.com</th>
+        <th>dell.com</th><th>enstratius.com</th>
+        <th>dell.com</th><th>enstratius.com</th>
+    </tr>
+{% for cell in google_results %}
+    <tr>
+        <td>{{ google_results[loop.index0].search_term}}</td>
+        <td>{{ google_results[loop.index0].results['dell.com'] }}</td>
+        <td>{{ google_results[loop.index0].results['enstratius.com'] }}</td>
+        <td>{{ yahoo_results[loop.index0].results['dell.com'] }}</td>
+        <td>{{ yahoo_results[loop.index0].results['enstratius.com'] }}</td>
+        <td>{{ bing_results[loop.index0].results['dell.com'] }}</td>
+        <td>{{ bing_results[loop.index0].results['enstratius.com'] }}</td>
+    </tr>
+{% endfor %}
+</table>
+
+</body>
+</html>
