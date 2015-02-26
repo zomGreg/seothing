@@ -65,17 +65,17 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-            <h2 class="sub-header">Google Results </h2> <h4>Updated: {{ last_update }}</h4>
+            <h2 class="sub-header">Bing Results</h2> <h4>Updated: {{ last_update }}</h4>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <tr>
                         <th>Search Term</th></th><th>dell.com</th><th>enstratius.com</th>
                     </tr>
-                    {% for cell in google_results %}
+                    {% for cell in bing_results %}
                     <tr>
-                        <td>{{ google_results[loop.index0].search_term}}</td>
-                        <td>{{ google_results[loop.index0].results['dell.com'] }}</td>
-                        <td>{{ google_results[loop.index0].results['enstratius.com'] }}</td>
+                        <td>{{ bing_results[loop.index0].search_term}}</td>
+                        <td>{{ bing_results[loop.index0].results['dell.com'] }}</td>
+                        <td>{{ bing_results[loop.index0].results['enstratius.com'] }}</td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -87,7 +87,7 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://ajax.bingapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="../../dist/js/bootstrap.min.js"></script>
 <script src="../../assets/js/docs.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
