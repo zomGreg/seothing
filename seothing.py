@@ -71,6 +71,7 @@ def process_terms(f, *args, **kwargs):
     enstratius_term = 'enstratius.com'
 
     result_list=[]
+    result_counts=[]
     result_dict={}
     results = {}
 
@@ -91,18 +92,39 @@ def process_terms(f, *args, **kwargs):
         space_string = s.replace('+', ' ')
 
         if len(dell_idx) == 0:
-            dell = "Not Found"
+            dell = ""
         else:
             dell = str(dell_idx).strip('[]')
 
         if len(enstratius_idx) == 0:
-            enstratius = "Not Found"
+            enstratius = ""
         else:
             enstratius = str(enstratius_idx).strip('[]')
 
+        if dell == 'Not Found':
+            length_dell=0
+        else:
+            length_dell=len(dell)
+
+        if enstratius == 'Not Found':
+            length_enstratius = 0
+        else:
+            length_enstratius = len(enstratius)
+
+        result_counts.append({"label": str(space_string), "value": length_dell})
+
         result_list.append({"search_term": str(space_string), "results": {"dell.com": dell, "enstratius.com": enstratius}})
 
-        # result_dict[space_string] = {"dell.com": dell, "enstratius.com": enstratius}
+        result_dict[space_string] = {"dell.com": dell, "enstratius.com": enstratius}
+
+    counts = {"key": "Search Counter", "values": result_counts}
+
+    # with open ('./tmp/counts.json', 'w') as g:
+    #     try:
+            # data = json.dumps(counts)
+            # g.write(data)
+        # except ValueError:
+        #     pass
 
     results[search_engine] = result_list
     with open('./tmp/'+search_engine+'.json', 'w') as f:

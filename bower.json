@@ -1,0 +1,20 @@
+{
+  "name": "seothing",
+  "version": "0.0.0",
+  "homepage": "https://github.com/zomGreg/seothing",
+  "authors": [
+    "zomgreg <greg.moselle@enstratius.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "nvd3": "~1.8.1"
+  }
+}

@@ -1,3 +1,4 @@
 *.pyc
 tmp/*.json
 search_terms.txt
+app/static/components/*
