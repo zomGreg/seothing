@@ -28,7 +28,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/nv.d3.css') }}">
-    <script src="../static/js/multibar.js"></script>
+    <script src="../static/js/main.js"></script>
 </head>
 <body>
 
@@ -91,11 +91,11 @@
 
             <h2 class="sub-header">All Results </h2> <h4>Updated: {{ last_update }} </h4>
 
-            <style>#multibar svg {
-                height: 800px;
+            <style>#piechart svg {
+                height: 400px;
             }</style>
 
-            <div id="multibar">
+            <div id="piechart">
                 <svg></svg>
             </div>
 

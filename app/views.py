@@ -65,6 +65,12 @@ def multibardata():
         data = json.load(f)
     return json.dumps(data)
 
+@app.route('/piedata')
+def piedata():
+    with open('./tmp/piedata.json', 'r') as f:
+        data = json.load(f)
+    return json.dumps(data)
+
 @app.route('/google_counts')
 def googlecounts():
     with open('./tmp/google.json', 'r') as f:
