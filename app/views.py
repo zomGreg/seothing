@@ -18,7 +18,6 @@ def google():
                                google_results=google_results,
                                last_update=last_update)
 
-
 @app.route('/yahoo')
 def yahoo():
     with open('./tmp/yahoo.json', 'r') as f:
@@ -30,7 +29,6 @@ def yahoo():
                                yahoo_results=yahoo_results,
                                last_update=last_update)
 
-
 @app.route('/bing')
 def bing():
     with open('./tmp/bing.json', 'r') as f:
@@ -41,7 +39,6 @@ def bing():
         return render_template("bing.html",
                                bing_results=bing_results,
                                last_update=last_update)
-
 
 @app.route("/linedata")
 def linedata():
@@ -67,9 +64,27 @@ def multibardata():
 
 @app.route('/piedata')
 def piedata():
-    with open('./tmp/piedata.json', 'r') as f:
-        data = json.load(f)
-    return json.dumps(data)
+    client = app.test_client()
+    google_response = client.get('/google_counts')
+    d=json.loads(google_response.data)
+    google_total1=[i['value'] for i in d[0]['values']]
+    google_total2=[i['value'] for i in d[1]['values']]
+    total_google_links = sum(google_total1)+sum(google_total2)
+
+    yahoo_response = client.get('/yahoo_counts')
+    d=json.loads(yahoo_response.data)
+    yahoo_total1=[i['value'] for i in d[0]['values']]
+    yahoo_total2=[i['value'] for i in d[1]['values']]
+    total_yahoo_links = sum(yahoo_total1)+sum(yahoo_total2)
+
+    bing_response = client.get('/bing_counts')
+    d=json.loads(bing_response.data)
+    bing_total1=[i['value'] for i in d[0]['values']]
+    bing_total2=[i['value'] for i in d[1]['values']]
+    total_bing_links = sum(bing_total1)+sum(bing_total2)
+
+    pie_results = [{"label": "Google", "value": total_google_links}, {"label": "Yahoo", "value": total_yahoo_links}, {"label": "Bing", "value": total_bing_links}]
+    return json.dumps(pie_results)
 
 @app.route('/google_counts')
 def googlecounts():
